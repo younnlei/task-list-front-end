@@ -77,12 +77,6 @@ const buttonClass = complete ? 'tasks__item__toggle--completed; : '';
 */
 
 
-
-
-
-
-
-
 /*
 FOLLOW THE DATA PATH
   - the task data is created once in 'App', then passed down one level at a time like a hand-off from parent to child through props.
