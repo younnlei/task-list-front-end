@@ -1,3 +1,12 @@
+/*
+.tasks__item__toggle:hover {background-color: ect;}
+This turns any task gray when you hover over it including completed ones.
+A task + pseydo-class is more specific than --completed, so the hover color wins.
+If I change the completed background color and it seems to disappear when I hover this is why.
+We must add a rule like
+.tasks__item__toggle--complerted:hover {background-color: ect;}
+*/
+
 .tasks__item__toggle {
   cursor: pointer;
   width: 100%;
@@ -7,6 +16,10 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/*
+This puts the title button and the x button side by side on one line.
+width: 100% on the toggle button tells the title to fill all the space the x doesn't use.
+*/
 .tasks__item {
   display: flex;
   align-items: top;
@@ -17,10 +30,22 @@
   border-color: rgba(0, 0, 0, 0.15);
 }
 
+
+/*This is the class Task.jsx adds when complete is true. It adds the strikethrough.*/
 .tasks__item__toggle--completed {
   text-decoration: line-through;
+  color: #777777;    /*NEW grey text*/
+  background-color: rgba(128, 0, 128, 0.15); /*purple tint instead of green */
+  border-color: rgba(128, 0, 128, 0.3);
+/*REPLACED THIS FOR WAVE 02
   background-color: rgba(0, 128, 0, 0.15);
   border-color: rgba(0, 128, 0, 0.2);
+*/
+}
+
+/*NEW: keep the purple when hovering, so the gray hover rule doesn't override*/
+.tasks_item_toggle--completed:hover {
+  background-color: rgba(128, 0, 128, 0.25);
 }
 
 button.tasks__item__remove {
@@ -32,3 +57,18 @@ button.tasks__item__remove {
   font-size: 100%;
   margin: 0;
 }
+
+
+
+/*
+What happens between clicking tasks and seeing strike through?
+click --> state changes --> re-render --> new class --> new style
+When I click the task title, the button’s onClick runs setComplete(!complete),
+which flips the complete state from false to true.
+Changing state makes React re-render that Task. On the re-render,
+the ternary sets buttonClass to 'tasks__item__toggle--completed',
+o the button’s className now includes that class.
+The CSS rule for .tasks__item__toggle--completed matches,
+so the browser applies line-through and the green background.
+Clicking again flips it back to false, the class is removed, and the style goes away.
+*/
