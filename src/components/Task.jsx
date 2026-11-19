@@ -1,14 +1,15 @@
 //useState is the React hook that lets a component remember a value and re-render when the value changes
 //also named exports from React use curly braces while PropTypes is a defalut export
 //.css has the components style
-import { useState } from 'react';
+//REMOVEDWAVE3-import { useState } from 'react';
 import PropTypes from 'prop-types';
 import './Task.css';
 
 //destructures the three props that TaskList passed in
 const Task = ({ id, title, isComplete }) => {
-  const [complete, setComplete] = useState(isComplete); //see notes below
-  const buttonClass = complete ? 'tasks__item__toggle--completed' : '';//see notes below
+  //REMOVEDWAVE3-const [complete, setComplete] = useState(isComplete); //see notes below
+  //REMOVEDWAVE3-const buttonClass = complete ? 'tasks__item__toggle--completed' : '';//see notes below
+  const buttonClass = isComplete ? 'tasks__item__toggle--completed' : '';
 
 //each task is one <li> inside TaskLit's <ul>
 //The task title itself is a 'button' so a reaction when clicked
@@ -23,7 +24,8 @@ const Task = ({ id, title, isComplete }) => {
     <li className="tasks__item">
       <button
         className={`tasks__item__toggle ${buttonClass}`}
-        onClick={() => setComplete(!complete)}
+        //REMOVEDWAVE3-onClick={() => setComplete(!complete)}
+        onClick={() => {}}
       >
         {title}
       </button>
@@ -90,4 +92,36 @@ TaskList receives it in a prop called tasks -->
   Tasklist hands 'mow the lawn' to a Task -->
 Task.jsx puts the title in the HTML -->
 
+*/
+
+
+/*
+WAVE 03 CHANGES (Part A: Lifting Up State)
+
+WHY
+  - Before: Task kept its OWN copy of whether it was complete (useState).
+    Clicking flipped Task's copy, but App's data never changed, so the
+    screen and App's data stopped matching after the first click.
+  - App is the component that will tell the database what changed (Wave 04),
+    so App needs to be the one that owns the data and knows about changes.
+  - Now: Task doesn't own the data. It just DISPLAYS whatever props it's given.
+    isComplete comes straight from props, and Task can't change its own props.
+
+Remove useState from Task
+    1. Remove the import: import { useState } from 'react';
+        - nothing in Task uses it anymore
+    2. Remove: const [complete, setComplete] = useState(isComplete);
+        - complete and setComplete no longer exist, so everything
+          that used them must change (steps 3 and 4)
+    3. Change: const buttonClass = complete ? 'tasks__item__toggle--completed' : '';
+      To:     const buttonClass = isComplete ? 'tasks__item__toggle--completed' : '';
+        - the strikethrough style now comes from the prop, not local state
+    4. Change: onClick={() => setComplete(!complete)}
+      To:     onClick={() => {}}
+        - temporary placeholder: clicking does nothing for now
+        - Part B: App will pass down an onToggle function, and Task will
+          call onToggle(id) to ASK App to flip the task
+
+KEY IDEA: the child asks, the parent decides.
+  Task (child) displays + asks  →  App (parent) owns + changes the data
 */
