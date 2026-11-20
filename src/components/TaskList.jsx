@@ -7,7 +7,8 @@ import './TaskList.css';
 
 //App has passed task={TASKS} --> React builds a props object. {tasks: [...]}
 //{tasks} is destructuring meaning it pulls tasks out of that object so I can write 'tasks' instead of const TaskList = (props) => {... props.tasks ...}
-const TaskList = ({ tasks }) => {
+//Wave03- add onToggle and onDelete functions
+const TaskList = ({ tasks, onToggle, onDelete }) => {
   //helper function defined inside the component. parameter tasks hides the outer tasks prop inside the function even though it's the same array with duplicate names.
   const getTaskListJSX = (tasks) => {
     //loops over the array and returns a new array, turns each plain task object into a <Task /> element.
@@ -20,6 +21,8 @@ const TaskList = ({ tasks }) => {
           id={task.id}//prop for the task
           title={task.title}//prop for the task
           isComplete={task.isComplete}//prop for the task
+          onToggle={onToggle}//wave03- prop for the task
+          onDelete={onDelete}//wave03- prop for the task
         />
       );
     });
@@ -39,6 +42,8 @@ TaskList.propTypes = {
       isComplete: PropTypes.bool.isRequired,
     })
   ).isRequired,
+  onToggle: PropTypes.func.isRequired, //wave 03- sibling of tasks outside the PropTypes.shape() because it's a prop of TaskList not a key inside each task object.
+  onDelete: PropTypes.func.isRequired, //wave 03- function
 };
 
 //This lets App.jsx import the component

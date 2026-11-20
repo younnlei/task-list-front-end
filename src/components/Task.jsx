@@ -5,8 +5,8 @@
 import PropTypes from 'prop-types';
 import './Task.css';
 
-//destructures the three props that TaskList passed in
-const Task = ({ id, title, isComplete }) => {
+//destructures the three props that TaskList passed in. Wave03-add onToggle and onDelete
+const Task = ({ id, title, isComplete, onToggle, onDelete }) => {
   //REMOVEDWAVE3-const [complete, setComplete] = useState(isComplete); //see notes below
   //REMOVEDWAVE3-const buttonClass = complete ? 'tasks__item__toggle--completed' : '';//see notes below
   const buttonClass = isComplete ? 'tasks__item__toggle--completed' : '';
@@ -25,11 +25,15 @@ const Task = ({ id, title, isComplete }) => {
       <button
         className={`tasks__item__toggle ${buttonClass}`}
         //REMOVEDWAVE3-onClick={() => setComplete(!complete)}
-        onClick={() => {}}
+        onClick={() => onToggle(id)}
       >
         {title}
       </button>
-      <button className="tasks__item__remove button">x</button>
+      <button className="tasks__item__remove button" //Wave03-wire up the x button
+        onClick={() => onDelete(id)}
+      >
+        x
+      </button>
     </li>
   );
 };
@@ -40,6 +44,8 @@ Task.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   isComplete: PropTypes.bool.isRequired,
+  onToggle: PropTypes.func.isRequired, //Wave03
+  onDelete: PropTypes.func.isRequired, //Wave03
 };
 
 export default Task;
@@ -124,4 +130,12 @@ Remove useState from Task
 
 KEY IDEA: the child asks, the parent decides.
   Task (child) displays + asks  →  App (parent) owns + changes the data
+*/
+
+/*
+WAVE 03 CHANGES (Part B: Toggle)
+1. Set buttons onClick to () => onToggle(id)
+    - changed onClick={() => {}} to onClick={() => onToggle(id)}
+    - also need to add onToggle(id) to const Task destructured props list
+    - also need to add onToggle to prop-types at the bottom of the file
 */

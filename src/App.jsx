@@ -25,7 +25,9 @@ const App = () => {
 
   //Wave3 - Function to flip isComplete for the ONE task whose id matches
   const toggleComplete = (id) => {
+    //updater form: React gives us the latest tasks as prevTasks
     setTasks((prevTasks) =>
+      //used when the NEW state depends on the old state. new array
       prevTasks.map((task) => {
         if (task.id === id) {
           return { ...task, isComplete: !task.isComplete };
@@ -35,13 +37,18 @@ const App = () => {
     );
   };
 
+//Wave3 - Delete function in App, also add to TaskList in div
+  const deleteTask = (id) => {
+    setTasks(tasks => tasks.filter(task => task.id !== id));
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
-        <div><TaskList tasks={tasks} onToggle={toggleComplete} /></div>
+        <div><TaskList tasks={tasks} onToggle={toggleComplete} onDelete={deleteTask}/></div>
       </main>
     </div>
   );
@@ -122,13 +129,14 @@ WAVE 03 CHANGES (Part B: Toggle Complete)
 WHY
   - App owns the tasks now, so App is the only one allowed to change them.
   - Task needs a way to ASK App to flip a task. We give it a function to call.
+  - We'll write a toggle function in App that takes a task id (so it knows WHICH task to flip).
+  - It builds a new array only the matching task's isComplete flips then calls setTasks
 
-1. Write a toggle function in App that takes a task id and builds a new array where only the matching task's isComplete flips then calls setTasks
-    - needs the id so it knows WHICH task to flip
-    - setTasks((prevTasks) => ...) is the "updater form":
+1. Write a toggle function in App that takes a task id
+    - const toggleComplete = (id) => {
+    - setTasks((prevTasks) => ...) updater form
         React hands us the most recent tasks as prevTasks, and we return the new list.
-        Use it whenever the new state depends on the old state.
-    - prevTasks.map(...) builds a NEW array (never change state directly):
+    - prevTasks.map(...) builds a NEW array
         id matches  → return a copy of that task with isComplete flipped
         no match    → return the task unchanged
     - { ...task, isComplete: !task.isComplete }
@@ -140,4 +148,16 @@ WHY
     - onToggle = the prop NAME (what TaskList calls it)
     - toggleComplete = the VALUE (the actual function in App)
     - no () after toggleComplete: we're handing over the function itself, not calling it
+3. In Task, the title button calls it: onClick={() => onToggle(id)}
+*/
+
+/*
+WAVE 03 CHANGES (Part C: Delete)
+New Concepts
+    - .filter keeps every task except the matching one
+
+1. write a delete function in App that takes a task id
+    - const deleteTask = (id) => {
+      setTasks(tasks => tasks.filter(task => task.id !== id));
+      };
 */
