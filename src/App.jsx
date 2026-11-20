@@ -1,5 +1,6 @@
 import TaskList from './components/TaskList.jsx';
 import './App.css';
+import { useState } from 'react';
 
 const TASKS = [
   {
@@ -15,13 +16,25 @@ const TASKS = [
 ];
 
 const App = () => {
+  const[taskData, setTaskData] = useState(TASKS);
+
+  // is complete
+  const handleTaskOnClick = (id)=>{
+    setTaskData(taskData => (taskData.map(task => {
+      if(task.id == id){
+        task.isComplete = !task.isComplete;
+      }
+      return { ...task, isComplete: !task.isComplete };
+    })));
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
-        <div>{<TaskList tasks={TASKS} />}</div>
+        <div>{<TaskList tasks={taskData} onClickTask = {handleTaskOnClick} />}</div>
       </main>
     </div>
   );
