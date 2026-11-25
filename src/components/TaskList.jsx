@@ -11,6 +11,7 @@ const TaskList = ({ tasks , onClickTask}) => {
           id={task.id}
           title={task.title}
           isComplete={task.isComplete}
+          onClickTask={onClickTask}
         />
       );
     });

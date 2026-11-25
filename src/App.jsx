@@ -19,13 +19,13 @@ const App = () => {
   const[taskData, setTaskData] = useState(TASKS);
 
   // is complete
-  const handleTaskOnClick = (id)=>{
-    setTaskData(taskData => (taskData.map(task => {
-      if(task.id == id){
-        task.isComplete = !task.isComplete;
+  const handleTaskOnClick = (id) => {
+    setTaskData(taskData => taskData.map(task => {
+      if (task.id === id) {
+        return { ...task, isComplete: !task.isComplete };
       }
-      return { ...task, isComplete: !task.isComplete };
-    })));
+      return task;
+    }));
   };
 
   return (
